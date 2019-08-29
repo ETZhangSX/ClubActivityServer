@@ -48,6 +48,10 @@ func (imp *ClubActivityManagerImp) CreateClubManager(wxId string, clubId string,
 //CreateClub 创建社团
 func (imp *ClubActivityManagerImp) CreateClub(ClubInfo *LifeService.ClubInfo, RetCode *int32) (int32, error) {
     var iRet int32
+    
+    CurrentTime := time.Now().Format("2006-01-02 15:04:05")
+    ClubInfo.Create_time = CurrentTime
+
     _, err := imp.dataServiceProxy.CreateClub(ClubInfo, &iRet)
 
     if err != nil {
@@ -115,7 +119,7 @@ func (imp *ClubActivityManagerImp) ApplyForClub(wx_id string, clubId string, Ret
 //CreateActivity 创建活动
 func (imp *ClubActivityManagerImp) CreateActivity(wx_id string, activityInfo *LifeService.ActivityInfo, RetCode *int32) (int32, error) {
     var isClubManager bool
-    _, err := imp.userInfoServiceProxy.IsClubManager(wx_id, activityInfo.ClubId, &isClubManager)
+    _, err := imp.userInfoServiceProxy.IsClubManager(wx_id, activityInfo.Club_id, &isClubManager)
     if err != nil {
         SLOG.Error("Remote Server UserInfoServer::IsClubManager error")
         *RetCode = 500
@@ -128,11 +132,11 @@ func (imp *ClubActivityManagerImp) CreateActivity(wx_id string, activityInfo *Li
         var Columns   = []LifeService.Column {
             LifeService.Column{ColumnName: "name"            	, DBInt: false , ColumnValue: activityInfo.Name},
             LifeService.Column{ColumnName: "sponsor"			, DBInt: false , ColumnValue: activityInfo.Sponsor},
-            LifeService.Column{ColumnName: "club_id"			, DBInt: true  , ColumnValue: activityInfo.ClubId},
-            LifeService.Column{ColumnName: "start_time"         , DBInt: false , ColumnValue: activityInfo.StartTime},
-            LifeService.Column{ColumnName: "stop_time"          , DBInt: false , ColumnValue: activityInfo.StopTime},
-            LifeService.Column{ColumnName: "registry_start_time", DBInt: false , ColumnValue: activityInfo.RegistryStartTime},
-            LifeService.Column{ColumnName: "registry_stop_time" , DBInt: false , ColumnValue: activityInfo.RegistryStopTime},
+            LifeService.Column{ColumnName: "club_id"			, DBInt: true  , ColumnValue: activityInfo.Club_id},
+            LifeService.Column{ColumnName: "start_time"         , DBInt: false , ColumnValue: activityInfo.Start_time},
+            LifeService.Column{ColumnName: "stop_time"          , DBInt: false , ColumnValue: activityInfo.Stop_time},
+            LifeService.Column{ColumnName: "registry_start_time", DBInt: false , ColumnValue: activityInfo.Registry_start_time},
+            LifeService.Column{ColumnName: "registry_stop_time" , DBInt: false , ColumnValue: activityInfo.Registry_stop_time},
             LifeService.Column{ColumnName: "content"            , DBInt: false , ColumnValue: activityInfo.Content},
         }
         _,err1 := imp.dataServiceProxy.InsertData(TableName, Columns)
@@ -189,17 +193,17 @@ func (imp *ClubActivityManagerImp) GetActivityDetail(activityId string, activity
         SLOG.Error("Call Remote DataServer::QueryData error: ", err)
         return -1, err
     }
-    activityInfo.ActivityId        = activityId
-    activityInfo.Name 		       = Result[0][Columns[0]]
-    activityInfo.Sponsor           = Result[0][Columns[1]]
-    activityInfo.ClubId            = Result[0][Columns[2]]
-    activityInfo.TargetId          = Result[0][Columns[3]]
-    activityInfo.CreateTime        = Result[0][Columns[4]]
-    activityInfo.StartTime         = Result[0][Columns[5]]
-    activityInfo.StopTime          = Result[0][Columns[6]]
-    activityInfo.RegistryStartTime = Result[0][Columns[7]]
-    activityInfo.RegistryStopTime  = Result[0][Columns[8]]
-    activityInfo.Content           = Result[0][Columns[9]]
+    activityInfo.Activity_id         = activityId
+    activityInfo.Name 		         = Result[0][Columns[0]]
+    activityInfo.Sponsor             = Result[0][Columns[1]]
+    activityInfo.Club_id             = Result[0][Columns[2]]
+    activityInfo.Target_id           = Result[0][Columns[3]]
+    activityInfo.Create_time         = Result[0][Columns[4]]
+    activityInfo.Start_time          = Result[0][Columns[5]]
+    activityInfo.Stop_time           = Result[0][Columns[6]]
+    activityInfo.Registry_start_time = Result[0][Columns[7]]
+    activityInfo.Registry_stop_time  = Result[0][Columns[8]]
+    activityInfo.Content             = Result[0][Columns[9]]
     return 0, nil
 }
 

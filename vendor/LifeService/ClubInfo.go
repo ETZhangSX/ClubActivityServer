@@ -10,10 +10,10 @@ import (
 
 //ClubInfo strcut implement
 type ClubInfo struct {
-	ClubId       string `json:"clubId"`
+	Club_id      string `json:"club_id"`
 	Name         string `json:"name"`
 	Chairman     string `json:"chairman"`
-	CreateTime   string `json:"createTime"`
+	Create_time  string `json:"create_time"`
 	Introduction string `json:"introduction"`
 }
 
@@ -28,7 +28,7 @@ func (st *ClubInfo) ReadFrom(_is *codec.Reader) error {
 	var ty byte
 	st.resetDefault()
 
-	err = _is.Read_string(&st.ClubId, 0, true)
+	err = _is.Read_string(&st.Club_id, 0, true)
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (st *ClubInfo) ReadFrom(_is *codec.Reader) error {
 		return err
 	}
 
-	err = _is.Read_string(&st.CreateTime, 3, true)
+	err = _is.Read_string(&st.Create_time, 3, true)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (st *ClubInfo) ReadBlock(_is *codec.Reader, tag byte, require bool) error {
 func (st *ClubInfo) WriteTo(_os *codec.Buffer) error {
 	var err error
 
-	err = _os.Write_string(st.ClubId, 0)
+	err = _os.Write_string(st.Club_id, 0)
 	if err != nil {
 		return err
 	}
@@ -106,7 +106,7 @@ func (st *ClubInfo) WriteTo(_os *codec.Buffer) error {
 		return err
 	}
 
-	err = _os.Write_string(st.CreateTime, 3)
+	err = _os.Write_string(st.Create_time, 3)
 	if err != nil {
 		return err
 	}
