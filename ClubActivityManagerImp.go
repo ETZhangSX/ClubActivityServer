@@ -2,7 +2,7 @@ package main
 
 import (
     "errors"
-    "strconv"
+    // "strconv"
     "time"
 
     "LifeService"
@@ -156,28 +156,28 @@ func (imp *ClubActivityManagerImp) CreateActivity(wx_id string, activityInfo *Li
 
 //GetActivityList 获取活动列表
 func (imp *ClubActivityManagerImp) GetActivityList(index int32, nextIndex *int32, activityList *[]map[string]string) (int32, error) {
-    var batch     = 15
-    var TableName = "activities"
-    var Columns   = []string {"activity_id", "name", "create_time"}
-    var Condition = "`activity_id`"
+    // var batch     = 15
+    // var TableName = "activities"
+    // var Columns   = []string {"activity_id", "name", "create_time"}
+    // var Condition = "`activity_id`"
 
-    if index == 0 {
-        Condition += ">0"
-    } else {
-        Condition += "<" + strconv.Itoa(int(index))
-    }
-    Condition += " and `stop_time`>'" + time.Now().Format("2006-01-02 15:04:05") + "' order by `create_time` limit " + strconv.Itoa(batch)
-
-    _, err := imp.dataServiceProxy.QueryData(TableName, Columns, Condition, activityList)
+    // if index == 0 {
+    //     Condition += ">0"
+    // } else {
+    //     Condition += "<" + strconv.Itoa(int(index))
+    // }
+    // Condition += " and `stop_time`>'" + time.Now().Format("2006-01-02 15:04:05") + "' order by `create_time` limit " + strconv.Itoa(batch)
+    _,err := imp.dataServiceProxy.GetActivityList(index, nextIndex, activityList)
+    // _, err := imp.dataServiceProxy.QueryData(TableName, Columns, Condition, activityList)
     if err != nil {
-        SLOG.Error("Call Remote DataServer::QueryData error: ", err)
+        SLOG.Error("Call Remote DataServer::GetActivityList error: ", err)
         return -1, err
     }
 
-    var lengthL = len(*activityList)
+    // var lengthL = len(*activityList)
 
-    tempIndex, _ := strconv.Atoi((*activityList)[lengthL - 1][Columns[0]])
-    *nextIndex = int32(tempIndex)
+    // tempIndex, _ := strconv.Atoi((*activityList)[lengthL - 1][Columns[0]])
+    // *nextIndex = int32(tempIndex)
     return 0, nil
 }
 
@@ -194,16 +194,16 @@ func (imp *ClubActivityManagerImp) GetActivityDetail(activityId string, activity
         return -1, err
     }
     activityInfo.Activity_id         = activityId
-    activityInfo.Name 		         = Result[0][Columns[0]]
-    activityInfo.Sponsor             = Result[0][Columns[1]]
-    activityInfo.Club_id             = Result[0][Columns[2]]
-    activityInfo.Target_id           = Result[0][Columns[3]]
-    activityInfo.Create_time         = Result[0][Columns[4]]
-    activityInfo.Start_time          = Result[0][Columns[5]]
-    activityInfo.Stop_time           = Result[0][Columns[6]]
-    activityInfo.Registry_start_time = Result[0][Columns[7]]
-    activityInfo.Registry_stop_time  = Result[0][Columns[8]]
-    activityInfo.Content             = Result[0][Columns[9]]
+    activityInfo.Name 		         = Result[0][Columns[1]]
+    activityInfo.Sponsor             = Result[0][Columns[2]]
+    activityInfo.Club_id             = Result[0][Columns[3]]
+    activityInfo.Target_id           = Result[0][Columns[4]]
+    activityInfo.Create_time         = Result[0][Columns[5]]
+    activityInfo.Start_time          = Result[0][Columns[6]]
+    activityInfo.Stop_time           = Result[0][Columns[7]]
+    activityInfo.Registry_start_time = Result[0][Columns[8]]
+    activityInfo.Registry_stop_time  = Result[0][Columns[9]]
+    activityInfo.Content             = Result[0][Columns[10]]
     return 0, nil
 }
 
