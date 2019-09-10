@@ -36,7 +36,7 @@ func (imp *ClubActivityManagerImp) CreateClubManager(wxId string, clubId string,
     }
     _, err := imp.dataServiceProxy.InsertData(TableName, Columns)
     if err != nil {
-        SLOG.Error("Call Remote DataServer::InsertData error: ", err)
+        SLOG.Error("Call Remote DataServer::InsertData error: ", err.Error())
         *RetCode = 400
         return -1, nil
     }
@@ -64,8 +64,9 @@ func (imp *ClubActivityManagerImp) CreateClub(ClubInfo *LifeService.ClubInfo, Re
 }
 
 //GetClubList 获取社团列表
-func (imp *ClubActivityManagerImp) GetClubList(clubInfoList *[]LifeService.ClubInfo, RetCode *int32) (int32, error) {
-    iRet, err := imp.dataServiceProxy.GetClubList(clubInfoList)
+func (imp *ClubActivityManagerImp) GetClubList(index int32, wxId string, nextIndex *int32, clubInfoList *[]LifeService.ClubInfo, RetCode *int32) (int32, error) {
+    var batch int32 = 6
+    iRet, err := imp.dataServiceProxy.GetClubList(index, batch, wxId, nextIndex, clubInfoList)
     if err != nil {
         SLOG.Error("Get club list error")
         *RetCode = 400
@@ -82,9 +83,9 @@ func (imp *ClubActivityManagerImp) GetClubList(clubInfoList *[]LifeService.ClubI
 }
 
 //ApplyForClub 申请社团
-func (imp *ClubActivityManagerImp) ApplyForClub(wx_id string, clubId string, RetCode *int32) (int32, error) {
+func (imp *ClubActivityManagerImp) ApplyForClub(wxId string, clubId string, RetCode *int32) (int32, error) {
     var isInClub bool
-    _, err := imp.userInfoServiceProxy.IsInClub(wx_id, clubId, false, &isInClub)
+    _, err := imp.userInfoServiceProxy.IsInClub(wxId, clubId, false, &isInClub)
     
     if err != nil {
         SLOG.Error("Remote Server UserInfoServer::IsInClub error")
@@ -99,7 +100,7 @@ func (imp *ClubActivityManagerImp) ApplyForClub(wx_id string, clubId string, Ret
         var TableName = "apply_for_club"
         var Columns   = []LifeService.Column {
             LifeService.Column{ColumnName: "apply_status", DBInt: true , ColumnValue: "0"},
-            LifeService.Column{ColumnName: "user_id"     , DBInt: false, ColumnValue: wx_id},
+            LifeService.Column{ColumnName: "user_id"     , DBInt: false, ColumnValue: wxId},
             LifeService.Column{ColumnName: "club_id"     , DBInt: true , ColumnValue: clubId},
         }
         _, err1 := imp.dataServiceProxy.InsertData(TableName, Columns)
@@ -116,10 +117,45 @@ func (imp *ClubActivityManagerImp) ApplyForClub(wx_id string, clubId string, Ret
     return 0, nil
 }
 
+//GetClubApply 获取社团申请列表
+func (imp *ClubActivityManagerImp) GetClubApply(clubId string, index int32, applyStatus int32, nextIndex *int32, applyList *[]LifeService.ApplyInfo) (int32, error) {
+    var batch int32 = 6
+    iRet, err := imp.dataServiceProxy.GetApplyListByClubId(clubId, index, batch, applyStatus, nextIndex, applyList)
+    if err != nil {
+        SLOG.Error("Remote Server DataServer::GetApplyListByClubId error: ", err.Error())
+        return -1, err
+    }
+    return iRet, err
+}
+
+//GetUserApply 获取用户的申请
+func (imp *ClubActivityManagerImp) GetUserApply(wxId string, index int32, applyStatus int32, nextIndex *int32, applyList *[]LifeService.ApplyInfo) (int32, error) {
+    var batch int32 = 6
+    iRet, err := imp.dataServiceProxy.GetApplyListByUserId(wxId, index, batch, applyStatus, nextIndex, applyList)
+    if err != nil {
+        SLOG.Error("Remote Server DataServer::GetApplyListByUserId error: ", err.Error())
+        return -1, err
+    }
+    return iRet, err
+}
+
+//DeleteApply 删除申请
+func (imp *ClubActivityManagerImp) DeleteApply(wxId string, clubId string, RetCode *int32) (int32, error) {
+    iRet, err := imp.dataServiceProxy.DeleteApply(wxId, clubId, RetCode)
+    if err != nil {
+        SLOG.Error("Remote Server DataServer::DeleteApply error: ", err.Error())
+        return -1, err
+    }
+    SLOG.Debug("DeleteApply")
+    return iRet, err
+}
+
 //CreateActivity 创建活动
 func (imp *ClubActivityManagerImp) CreateActivity(wx_id string, activityInfo *LifeService.ActivityInfo, RetCode *int32) (int32, error) {
     var isClubManager bool
+
     _, err := imp.userInfoServiceProxy.IsClubManager(wx_id, activityInfo.Club_id, &isClubManager)
+    
     if err != nil {
         SLOG.Error("Remote Server UserInfoServer::IsClubManager error")
         *RetCode = 500
@@ -155,30 +191,42 @@ func (imp *ClubActivityManagerImp) CreateActivity(wx_id string, activityInfo *Li
 }
 
 //GetActivityList 获取活动列表
-func (imp *ClubActivityManagerImp) GetActivityList(index int32, nextIndex *int32, activityList *[]map[string]string) (int32, error) {
-    // var batch     = 15
-    // var TableName = "activities"
-    // var Columns   = []string {"activity_id", "name", "create_time"}
-    // var Condition = "`activity_id`"
+func (imp *ClubActivityManagerImp) GetActivityList(index int32, wxId string, clubId string, nextIndex *int32, activityList *[]map[string]string) (int32, error) {
+    var batch int32 = 6
 
-    // if index == 0 {
-    //     Condition += ">0"
-    // } else {
-    //     Condition += "<" + strconv.Itoa(int(index))
-    // }
-    // Condition += " and `stop_time`>'" + time.Now().Format("2006-01-02 15:04:05") + "' order by `create_time` limit " + strconv.Itoa(batch)
-    _,err := imp.dataServiceProxy.GetActivityList(index, nextIndex, activityList)
-    // _, err := imp.dataServiceProxy.QueryData(TableName, Columns, Condition, activityList)
+    _,err := imp.dataServiceProxy.GetActivityList(index, batch, wxId, clubId, nextIndex, activityList)
+    
     if err != nil {
-        SLOG.Error("Call Remote DataServer::GetActivityList error: ", err)
+        SLOG.Error("Call Remote DataServer::GetActivityList error: ", err.Error())
         return -1, err
     }
-
-    // var lengthL = len(*activityList)
-
-    // tempIndex, _ := strconv.Atoi((*activityList)[lengthL - 1][Columns[0]])
-    // *nextIndex = int32(tempIndex)
     return 0, nil
+}
+
+//ModifyApplyStatus 设置申请状态
+func (imp *ClubActivityManagerImp) ModifyApplyStatus(wxId string, clubId string, applyStatus int32, RetCode *int32) (int32, error) {
+    var ret int32 = 0
+    iRet, err := imp.dataServiceProxy.SetApplyStatus(wxId, clubId, applyStatus, &ret)
+    if err != nil || ret != 0 {
+        SLOG.Error("Remote Server DataServer::setApplyStatus error: ", err.Error())
+        return -1, err
+    }
+    SLOG.Debug("ModifuApplyStatus")
+    *RetCode = 200
+    return iRet, err
+}
+
+//DeleteActivity 删除活动
+func (imp *ClubActivityManagerImp) DeleteActivity(activityId string, RetCode *int32) (int32, error) {
+    var ret int32
+    _, err := imp.dataServiceProxy.DeleteActivity(activityId, &ret)
+    if err != nil {
+        SLOG.Error("Remote Server DataServer::deleteActivity error: ", err.Error())
+        return -1, err
+    }
+    *RetCode = 200
+    SLOG.Debug("DeleteActivity")
+    return ret, err
 }
 
 //GetActivityDetail 获取活动详情
@@ -190,7 +238,7 @@ func (imp *ClubActivityManagerImp) GetActivityDetail(activityId string, activity
 
     _, err := imp.dataServiceProxy.QueryData(TableName, Columns, Condition, &Result)
     if err != nil {
-        SLOG.Error("Call Remote DataServer::QueryData error: ", err)
+        SLOG.Error("Call Remote DataServer::QueryData error: ", err.Error())
         return -1, err
     }
     activityInfo.Activity_id         = activityId
