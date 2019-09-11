@@ -370,6 +370,173 @@ func (_obj *ClubActivityManager) GetClubListWithContext(ctx context.Context, Ind
 	return ret, nil
 }
 
+//GetManagerClubList is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) GetManagerClubList(Index int32, WxId string, NextIndex *int32, ClubInfoList *[]ClubInfo, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_int32(Index, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(WxId, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "GetManagerClubList", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_int32(&(*NextIndex), 3, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err, _, ty = _is.SkipToNoCheck(4, true)
+	if err != nil {
+		return ret, err
+	}
+
+	if ty == codec.LIST {
+		err = _is.Read_int32(&length, 0, true)
+		if err != nil {
+			return ret, err
+		}
+		(*ClubInfoList) = make([]ClubInfo, length, length)
+		for i2, e2 := int32(0), length; i2 < e2; i2++ {
+
+			err = (*ClubInfoList)[i2].ReadBlock(_is, 0, false)
+			if err != nil {
+				return ret, err
+			}
+		}
+	} else if ty == codec.SIMPLE_LIST {
+		err = fmt.Errorf("not support simple_list type")
+		if err != nil {
+			return ret, err
+		}
+	} else {
+		err = fmt.Errorf("require vector, but not")
+		if err != nil {
+			return ret, err
+		}
+	}
+
+	err = _is.Read_int32(&(*RetCode), 5, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//GetManagerClubListWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) GetManagerClubListWithContext(ctx context.Context, Index int32, WxId string, NextIndex *int32, ClubInfoList *[]ClubInfo, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_int32(Index, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(WxId, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "GetManagerClubList", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_int32(&(*NextIndex), 3, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err, _, ty = _is.SkipToNoCheck(4, true)
+	if err != nil {
+		return ret, err
+	}
+
+	if ty == codec.LIST {
+		err = _is.Read_int32(&length, 0, true)
+		if err != nil {
+			return ret, err
+		}
+		(*ClubInfoList) = make([]ClubInfo, length, length)
+		for i3, e3 := int32(0), length; i3 < e3; i3++ {
+
+			err = (*ClubInfoList)[i3].ReadBlock(_is, 0, false)
+			if err != nil {
+				return ret, err
+			}
+		}
+	} else if ty == codec.SIMPLE_LIST {
+		err = fmt.Errorf("not support simple_list type")
+		if err != nil {
+			return ret, err
+		}
+	} else {
+		err = fmt.Errorf("require vector, but not")
+		if err != nil {
+			return ret, err
+		}
+	}
+
+	err = _is.Read_int32(&(*RetCode), 5, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
 //ApplyForClub is the proxy function for the method defined in the tars file, with the context
 func (_obj *ClubActivityManager) ApplyForClub(WxId string, ClubId string, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
 
@@ -525,9 +692,9 @@ func (_obj *ClubActivityManager) GetClubApply(ClubId string, Index int32, ApplyS
 			return ret, err
 		}
 		(*ApplyList) = make([]ApplyInfo, length, length)
-		for i2, e2 := int32(0), length; i2 < e2; i2++ {
+		for i4, e4 := int32(0), length; i4 < e4; i4++ {
 
-			err = (*ApplyList)[i2].ReadBlock(_is, 0, false)
+			err = (*ApplyList)[i4].ReadBlock(_is, 0, false)
 			if err != nil {
 				return ret, err
 			}
@@ -608,9 +775,9 @@ func (_obj *ClubActivityManager) GetClubApplyWithContext(ctx context.Context, Cl
 			return ret, err
 		}
 		(*ApplyList) = make([]ApplyInfo, length, length)
-		for i3, e3 := int32(0), length; i3 < e3; i3++ {
+		for i5, e5 := int32(0), length; i5 < e5; i5++ {
 
-			err = (*ApplyList)[i3].ReadBlock(_is, 0, false)
+			err = (*ApplyList)[i5].ReadBlock(_is, 0, false)
 			if err != nil {
 				return ret, err
 			}
@@ -692,9 +859,9 @@ func (_obj *ClubActivityManager) GetUserApply(WxId string, Index int32, ApplySta
 			return ret, err
 		}
 		(*ApplyList) = make([]ApplyInfo, length, length)
-		for i4, e4 := int32(0), length; i4 < e4; i4++ {
+		for i6, e6 := int32(0), length; i6 < e6; i6++ {
 
-			err = (*ApplyList)[i4].ReadBlock(_is, 0, false)
+			err = (*ApplyList)[i6].ReadBlock(_is, 0, false)
 			if err != nil {
 				return ret, err
 			}
@@ -775,9 +942,9 @@ func (_obj *ClubActivityManager) GetUserApplyWithContext(ctx context.Context, Wx
 			return ret, err
 		}
 		(*ApplyList) = make([]ApplyInfo, length, length)
-		for i5, e5 := int32(0), length; i5 < e5; i5++ {
+		for i7, e7 := int32(0), length; i7 < e7; i7++ {
 
-			err = (*ApplyList)[i5].ReadBlock(_is, 0, false)
+			err = (*ApplyList)[i7].ReadBlock(_is, 0, false)
 			if err != nil {
 				return ret, err
 			}
@@ -1160,7 +1327,7 @@ func (_obj *ClubActivityManager) GetActivityList(Index int32, WxId string, ClubI
 			return ret, err
 		}
 		(*ActivityList) = make([]map[string]string, length, length)
-		for i6, e6 := int32(0), length; i6 < e6; i6++ {
+		for i8, e8 := int32(0), length; i8 < e8; i8++ {
 
 			err, have = _is.SkipTo(codec.MAP, 0, false)
 			if err != nil {
@@ -1171,22 +1338,22 @@ func (_obj *ClubActivityManager) GetActivityList(Index int32, WxId string, ClubI
 				if err != nil {
 					return ret, err
 				}
-				(*ActivityList)[i6] = make(map[string]string)
-				for i7, e7 := int32(0), length; i7 < e7; i7++ {
-					var k7 string
-					var v7 string
+				(*ActivityList)[i8] = make(map[string]string)
+				for i9, e9 := int32(0), length; i9 < e9; i9++ {
+					var k9 string
+					var v9 string
 
-					err = _is.Read_string(&k7, 0, false)
+					err = _is.Read_string(&k9, 0, false)
 					if err != nil {
 						return ret, err
 					}
 
-					err = _is.Read_string(&v7, 1, false)
+					err = _is.Read_string(&v9, 1, false)
 					if err != nil {
 						return ret, err
 					}
 
-					(*ActivityList)[i6][k7] = v7
+					(*ActivityList)[i8][k9] = v9
 				}
 			}
 		}
@@ -1266,7 +1433,7 @@ func (_obj *ClubActivityManager) GetActivityListWithContext(ctx context.Context,
 			return ret, err
 		}
 		(*ActivityList) = make([]map[string]string, length, length)
-		for i8, e8 := int32(0), length; i8 < e8; i8++ {
+		for i10, e10 := int32(0), length; i10 < e10; i10++ {
 
 			err, have = _is.SkipTo(codec.MAP, 0, false)
 			if err != nil {
@@ -1277,22 +1444,22 @@ func (_obj *ClubActivityManager) GetActivityListWithContext(ctx context.Context,
 				if err != nil {
 					return ret, err
 				}
-				(*ActivityList)[i8] = make(map[string]string)
-				for i9, e9 := int32(0), length; i9 < e9; i9++ {
-					var k9 string
-					var v9 string
+				(*ActivityList)[i10] = make(map[string]string)
+				for i11, e11 := int32(0), length; i11 < e11; i11++ {
+					var k11 string
+					var v11 string
 
-					err = _is.Read_string(&k9, 0, false)
+					err = _is.Read_string(&k11, 0, false)
 					if err != nil {
 						return ret, err
 					}
 
-					err = _is.Read_string(&v9, 1, false)
+					err = _is.Read_string(&v11, 1, false)
 					if err != nil {
 						return ret, err
 					}
 
-					(*ActivityList)[i8][k9] = v9
+					(*ActivityList)[i10][k11] = v11
 				}
 			}
 		}
@@ -1306,6 +1473,93 @@ func (_obj *ClubActivityManager) GetActivityListWithContext(ctx context.Context,
 		if err != nil {
 			return ret, err
 		}
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//UpdateActivity is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) UpdateActivity(ActivityInfo *ActivityInfo, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = ActivityInfo.WriteBlock(_os, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "UpdateActivity", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_int32(&(*RetCode), 2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//UpdateActivityWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) UpdateActivityWithContext(ctx context.Context, ActivityInfo *ActivityInfo, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = ActivityInfo.WriteBlock(_os, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "UpdateActivity", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_int32(&(*RetCode), 2, true)
+	if err != nil {
+		return ret, err
 	}
 
 	_obj.setMap(len(_opt), _resp, _context, _status)
@@ -1489,6 +1743,143 @@ func (_obj *ClubActivityManager) GetActivityDetailWithContext(ctx context.Contex
 	return ret, nil
 }
 
+//GetActivityParticipate is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) GetActivityParticipate(ActivityId string, ParticipateList *[]ActivityRecord, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(ActivityId, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "GetActivityParticipate", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err, _, ty = _is.SkipToNoCheck(2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	if ty == codec.LIST {
+		err = _is.Read_int32(&length, 0, true)
+		if err != nil {
+			return ret, err
+		}
+		(*ParticipateList) = make([]ActivityRecord, length, length)
+		for i12, e12 := int32(0), length; i12 < e12; i12++ {
+
+			err = (*ParticipateList)[i12].ReadBlock(_is, 0, false)
+			if err != nil {
+				return ret, err
+			}
+		}
+	} else if ty == codec.SIMPLE_LIST {
+		err = fmt.Errorf("not support simple_list type")
+		if err != nil {
+			return ret, err
+		}
+	} else {
+		err = fmt.Errorf("require vector, but not")
+		if err != nil {
+			return ret, err
+		}
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//GetActivityParticipateWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) GetActivityParticipateWithContext(ctx context.Context, ActivityId string, ParticipateList *[]ActivityRecord, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(ActivityId, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "GetActivityParticipate", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err, _, ty = _is.SkipToNoCheck(2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	if ty == codec.LIST {
+		err = _is.Read_int32(&length, 0, true)
+		if err != nil {
+			return ret, err
+		}
+		(*ParticipateList) = make([]ActivityRecord, length, length)
+		for i13, e13 := int32(0), length; i13 < e13; i13++ {
+
+			err = (*ParticipateList)[i13].ReadBlock(_is, 0, false)
+			if err != nil {
+				return ret, err
+			}
+		}
+	} else if ty == codec.SIMPLE_LIST {
+		err = fmt.Errorf("not support simple_list type")
+		if err != nil {
+			return ret, err
+		}
+	} else {
+		err = fmt.Errorf("require vector, but not")
+		if err != nil {
+			return ret, err
+		}
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
 //ApplyForActivity is the proxy function for the method defined in the tars file, with the context
 func (_obj *ClubActivityManager) ApplyForActivity(WxId string, ActivityId string, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
 
@@ -1586,6 +1977,103 @@ func (_obj *ClubActivityManager) ApplyForActivityWithContext(ctx context.Context
 	return ret, nil
 }
 
+//DeleteActivityParticipate is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) DeleteActivityParticipate(ActivityId string, WxId string, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(ActivityId, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(WxId, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "DeleteActivityParticipate", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_int32(&(*RetCode), 3, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//DeleteActivityParticipateWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *ClubActivityManager) DeleteActivityParticipateWithContext(ctx context.Context, ActivityId string, WxId string, RetCode *int32, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(ActivityId, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(WxId, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "DeleteActivityParticipate", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_int32(&(*RetCode), 3, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
 //SetServant sets servant for the service.
 func (_obj *ClubActivityManager) SetServant(s m.Servant) {
 	_obj.s = s
@@ -1633,6 +2121,7 @@ type _impClubActivityManager interface {
 	CreateClubManager(WxId string, ClubId string, RetCode *int32) (ret int32, err error)
 	CreateClub(ClubInfo *ClubInfo, RetCode *int32) (ret int32, err error)
 	GetClubList(Index int32, WxId string, NextIndex *int32, ClubInfoList *[]ClubInfo, RetCode *int32) (ret int32, err error)
+	GetManagerClubList(Index int32, WxId string, NextIndex *int32, ClubInfoList *[]ClubInfo, RetCode *int32) (ret int32, err error)
 	ApplyForClub(WxId string, ClubId string, RetCode *int32) (ret int32, err error)
 	GetClubApply(ClubId string, Index int32, ApplyStatus int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
 	GetUserApply(WxId string, Index int32, ApplyStatus int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
@@ -1640,14 +2129,18 @@ type _impClubActivityManager interface {
 	DeleteApply(WxId string, ClubId string, RetCode *int32) (ret int32, err error)
 	CreateActivity(WxId string, ActivityInfo *ActivityInfo, RetCode *int32) (ret int32, err error)
 	GetActivityList(Index int32, WxId string, ClubId string, NextIndex *int32, ActivityList *[]map[string]string) (ret int32, err error)
+	UpdateActivity(ActivityInfo *ActivityInfo, RetCode *int32) (ret int32, err error)
 	DeleteActivity(ActivityId string, RetCode *int32) (ret int32, err error)
 	GetActivityDetail(ActivityId string, ActivityInfo *ActivityInfo) (ret int32, err error)
+	GetActivityParticipate(ActivityId string, ParticipateList *[]ActivityRecord) (ret int32, err error)
 	ApplyForActivity(WxId string, ActivityId string, RetCode *int32) (ret int32, err error)
+	DeleteActivityParticipate(ActivityId string, WxId string, RetCode *int32) (ret int32, err error)
 }
 type _impClubActivityManagerWithContext interface {
 	CreateClubManager(ctx context.Context, WxId string, ClubId string, RetCode *int32) (ret int32, err error)
 	CreateClub(ctx context.Context, ClubInfo *ClubInfo, RetCode *int32) (ret int32, err error)
 	GetClubList(ctx context.Context, Index int32, WxId string, NextIndex *int32, ClubInfoList *[]ClubInfo, RetCode *int32) (ret int32, err error)
+	GetManagerClubList(ctx context.Context, Index int32, WxId string, NextIndex *int32, ClubInfoList *[]ClubInfo, RetCode *int32) (ret int32, err error)
 	ApplyForClub(ctx context.Context, WxId string, ClubId string, RetCode *int32) (ret int32, err error)
 	GetClubApply(ctx context.Context, ClubId string, Index int32, ApplyStatus int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
 	GetUserApply(ctx context.Context, WxId string, Index int32, ApplyStatus int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
@@ -1655,9 +2148,12 @@ type _impClubActivityManagerWithContext interface {
 	DeleteApply(ctx context.Context, WxId string, ClubId string, RetCode *int32) (ret int32, err error)
 	CreateActivity(ctx context.Context, WxId string, ActivityInfo *ActivityInfo, RetCode *int32) (ret int32, err error)
 	GetActivityList(ctx context.Context, Index int32, WxId string, ClubId string, NextIndex *int32, ActivityList *[]map[string]string) (ret int32, err error)
+	UpdateActivity(ctx context.Context, ActivityInfo *ActivityInfo, RetCode *int32) (ret int32, err error)
 	DeleteActivity(ctx context.Context, ActivityId string, RetCode *int32) (ret int32, err error)
 	GetActivityDetail(ctx context.Context, ActivityId string, ActivityInfo *ActivityInfo) (ret int32, err error)
+	GetActivityParticipate(ctx context.Context, ActivityId string, ParticipateList *[]ActivityRecord) (ret int32, err error)
 	ApplyForActivity(ctx context.Context, WxId string, ActivityId string, RetCode *int32) (ret int32, err error)
+	DeleteActivityParticipate(ctx context.Context, ActivityId string, WxId string, RetCode *int32) (ret int32, err error)
 }
 
 func CreateClubManager(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
@@ -1784,6 +2280,78 @@ func GetClubList(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *
 	} else {
 		_imp := _val.(_impClubActivityManagerWithContext)
 		ret, err := _imp.GetClubList(ctx, Index, WxId, &NextIndex, &ClubInfoList, &RetCode)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = _os.Write_int32(NextIndex, 3)
+	if err != nil {
+		return err
+	}
+
+	err = _os.WriteHead(codec.LIST, 4)
+	if err != nil {
+		return err
+	}
+	err = _os.Write_int32(int32(len(ClubInfoList)), 0)
+	if err != nil {
+		return err
+	}
+	for _, v := range ClubInfoList {
+
+		err = v.WriteBlock(_os, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = _os.Write_int32(RetCode, 5)
+	if err != nil {
+		return err
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
+func GetManagerClubList(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var Index int32
+	err = _is.Read_int32(&Index, 1, true)
+	if err != nil {
+		return err
+	}
+	var WxId string
+	err = _is.Read_string(&WxId, 2, true)
+	if err != nil {
+		return err
+	}
+	var NextIndex int32
+	var ClubInfoList []ClubInfo
+	var RetCode int32
+	if withContext == false {
+		_imp := _val.(_impClubActivityManager)
+		ret, err := _imp.GetManagerClubList(Index, WxId, &NextIndex, &ClubInfoList, &RetCode)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impClubActivityManagerWithContext)
+		ret, err := _imp.GetManagerClubList(ctx, Index, WxId, &NextIndex, &ClubInfoList, &RetCode)
 		if err != nil {
 			return err
 		}
@@ -2236,18 +2804,62 @@ func GetActivityList(ctx context.Context, _val interface{}, _os *codec.Buffer, _
 		if err != nil {
 			return err
 		}
-		for k10, v10 := range v {
+		for k14, v14 := range v {
 
-			err = _os.Write_string(k10, 0)
+			err = _os.Write_string(k14, 0)
 			if err != nil {
 				return err
 			}
 
-			err = _os.Write_string(v10, 1)
+			err = _os.Write_string(v14, 1)
 			if err != nil {
 				return err
 			}
 		}
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
+func UpdateActivity(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var ActivityInfo ActivityInfo
+	err = ActivityInfo.ReadBlock(_is, 1, true)
+	if err != nil {
+		return err
+	}
+	var RetCode int32
+	if withContext == false {
+		_imp := _val.(_impClubActivityManager)
+		ret, err := _imp.UpdateActivity(&ActivityInfo, &RetCode)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impClubActivityManagerWithContext)
+		ret, err := _imp.UpdateActivity(ctx, &ActivityInfo, &RetCode)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = _os.Write_int32(RetCode, 2)
+	if err != nil {
+		return err
 	}
 
 	_ = length
@@ -2343,6 +2955,61 @@ func GetActivityDetail(ctx context.Context, _val interface{}, _os *codec.Buffer,
 	_ = ty
 	return nil
 }
+func GetActivityParticipate(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var ActivityId string
+	err = _is.Read_string(&ActivityId, 1, true)
+	if err != nil {
+		return err
+	}
+	var ParticipateList []ActivityRecord
+	if withContext == false {
+		_imp := _val.(_impClubActivityManager)
+		ret, err := _imp.GetActivityParticipate(ActivityId, &ParticipateList)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impClubActivityManagerWithContext)
+		ret, err := _imp.GetActivityParticipate(ctx, ActivityId, &ParticipateList)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = _os.WriteHead(codec.LIST, 2)
+	if err != nil {
+		return err
+	}
+	err = _os.Write_int32(int32(len(ParticipateList)), 0)
+	if err != nil {
+		return err
+	}
+	for _, v := range ParticipateList {
+
+		err = v.WriteBlock(_os, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
 func ApplyForActivity(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
 	var length int32
 	var have bool
@@ -2392,6 +3059,55 @@ func ApplyForActivity(ctx context.Context, _val interface{}, _os *codec.Buffer, 
 	_ = ty
 	return nil
 }
+func DeleteActivityParticipate(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var ActivityId string
+	err = _is.Read_string(&ActivityId, 1, true)
+	if err != nil {
+		return err
+	}
+	var WxId string
+	err = _is.Read_string(&WxId, 2, true)
+	if err != nil {
+		return err
+	}
+	var RetCode int32
+	if withContext == false {
+		_imp := _val.(_impClubActivityManager)
+		ret, err := _imp.DeleteActivityParticipate(ActivityId, WxId, &RetCode)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impClubActivityManagerWithContext)
+		ret, err := _imp.DeleteActivityParticipate(ctx, ActivityId, WxId, &RetCode)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = _os.Write_int32(RetCode, 3)
+	if err != nil {
+		return err
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
 
 //Dispatch is used to call the server side implemnet for the method defined in the tars file. withContext shows using context or not.
 func (_obj *ClubActivityManager) Dispatch(ctx context.Context, _val interface{}, req *requestf.RequestPacket, resp *requestf.ResponsePacket, withContext bool) (err error) {
@@ -2410,6 +3126,11 @@ func (_obj *ClubActivityManager) Dispatch(ctx context.Context, _val interface{},
 		}
 	case "GetClubList":
 		err := GetClubList(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
+	case "GetManagerClubList":
+		err := GetManagerClubList(ctx, _val, _os, _is, withContext)
 		if err != nil {
 			return err
 		}
@@ -2448,6 +3169,11 @@ func (_obj *ClubActivityManager) Dispatch(ctx context.Context, _val interface{},
 		if err != nil {
 			return err
 		}
+	case "UpdateActivity":
+		err := UpdateActivity(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
 	case "DeleteActivity":
 		err := DeleteActivity(ctx, _val, _os, _is, withContext)
 		if err != nil {
@@ -2458,8 +3184,18 @@ func (_obj *ClubActivityManager) Dispatch(ctx context.Context, _val interface{},
 		if err != nil {
 			return err
 		}
+	case "GetActivityParticipate":
+		err := GetActivityParticipate(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
 	case "ApplyForActivity":
 		err := ApplyForActivity(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
+	case "DeleteActivityParticipate":
+		err := DeleteActivityParticipate(ctx, _val, _os, _is, withContext)
 		if err != nil {
 			return err
 		}
