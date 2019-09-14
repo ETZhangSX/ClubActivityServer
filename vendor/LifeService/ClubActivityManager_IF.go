@@ -1744,13 +1744,18 @@ func (_obj *ClubActivityManager) GetActivityDetailWithContext(ctx context.Contex
 }
 
 //GetActivityParticipate is the proxy function for the method defined in the tars file, with the context
-func (_obj *ClubActivityManager) GetActivityParticipate(ActivityId string, ParticipateList *[]ActivityRecord, _opt ...map[string]string) (ret int32, err error) {
+func (_obj *ClubActivityManager) GetActivityParticipate(Index int32, ActivityId string, NextIndex *int32, ParticipateList *[]ActivityRecord, _opt ...map[string]string) (ret int32, err error) {
 
 	var length int32
 	var have bool
 	var ty byte
 	_os := codec.NewBuffer()
-	err = _os.Write_string(ActivityId, 1)
+	err = _os.Write_int32(Index, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(ActivityId, 2)
 	if err != nil {
 		return ret, err
 	}
@@ -1775,7 +1780,12 @@ func (_obj *ClubActivityManager) GetActivityParticipate(ActivityId string, Parti
 		return ret, err
 	}
 
-	err, _, ty = _is.SkipToNoCheck(2, true)
+	err = _is.Read_int32(&(*NextIndex), 3, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err, _, ty = _is.SkipToNoCheck(4, true)
 	if err != nil {
 		return ret, err
 	}
@@ -1813,13 +1823,18 @@ func (_obj *ClubActivityManager) GetActivityParticipate(ActivityId string, Parti
 }
 
 //GetActivityParticipateWithContext is the proxy function for the method defined in the tars file, with the context
-func (_obj *ClubActivityManager) GetActivityParticipateWithContext(ctx context.Context, ActivityId string, ParticipateList *[]ActivityRecord, _opt ...map[string]string) (ret int32, err error) {
+func (_obj *ClubActivityManager) GetActivityParticipateWithContext(ctx context.Context, Index int32, ActivityId string, NextIndex *int32, ParticipateList *[]ActivityRecord, _opt ...map[string]string) (ret int32, err error) {
 
 	var length int32
 	var have bool
 	var ty byte
 	_os := codec.NewBuffer()
-	err = _os.Write_string(ActivityId, 1)
+	err = _os.Write_int32(Index, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(ActivityId, 2)
 	if err != nil {
 		return ret, err
 	}
@@ -1843,7 +1858,12 @@ func (_obj *ClubActivityManager) GetActivityParticipateWithContext(ctx context.C
 		return ret, err
 	}
 
-	err, _, ty = _is.SkipToNoCheck(2, true)
+	err = _is.Read_int32(&(*NextIndex), 3, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err, _, ty = _is.SkipToNoCheck(4, true)
 	if err != nil {
 		return ret, err
 	}
@@ -2132,7 +2152,7 @@ type _impClubActivityManager interface {
 	UpdateActivity(ActivityInfo *ActivityInfo, RetCode *int32) (ret int32, err error)
 	DeleteActivity(ActivityId string, RetCode *int32) (ret int32, err error)
 	GetActivityDetail(ActivityId string, ActivityInfo *ActivityInfo) (ret int32, err error)
-	GetActivityParticipate(ActivityId string, ParticipateList *[]ActivityRecord) (ret int32, err error)
+	GetActivityParticipate(Index int32, ActivityId string, NextIndex *int32, ParticipateList *[]ActivityRecord) (ret int32, err error)
 	ApplyForActivity(WxId string, ActivityId string, RetCode *int32) (ret int32, err error)
 	DeleteActivityParticipate(ActivityId string, WxId string, RetCode *int32) (ret int32, err error)
 }
@@ -2151,7 +2171,7 @@ type _impClubActivityManagerWithContext interface {
 	UpdateActivity(ctx context.Context, ActivityInfo *ActivityInfo, RetCode *int32) (ret int32, err error)
 	DeleteActivity(ctx context.Context, ActivityId string, RetCode *int32) (ret int32, err error)
 	GetActivityDetail(ctx context.Context, ActivityId string, ActivityInfo *ActivityInfo) (ret int32, err error)
-	GetActivityParticipate(ctx context.Context, ActivityId string, ParticipateList *[]ActivityRecord) (ret int32, err error)
+	GetActivityParticipate(ctx context.Context, Index int32, ActivityId string, NextIndex *int32, ParticipateList *[]ActivityRecord) (ret int32, err error)
 	ApplyForActivity(ctx context.Context, WxId string, ActivityId string, RetCode *int32) (ret int32, err error)
 	DeleteActivityParticipate(ctx context.Context, ActivityId string, WxId string, RetCode *int32) (ret int32, err error)
 }
@@ -2959,15 +2979,21 @@ func GetActivityParticipate(ctx context.Context, _val interface{}, _os *codec.Bu
 	var length int32
 	var have bool
 	var ty byte
-	var ActivityId string
-	err = _is.Read_string(&ActivityId, 1, true)
+	var Index int32
+	err = _is.Read_int32(&Index, 1, true)
 	if err != nil {
 		return err
 	}
+	var ActivityId string
+	err = _is.Read_string(&ActivityId, 2, true)
+	if err != nil {
+		return err
+	}
+	var NextIndex int32
 	var ParticipateList []ActivityRecord
 	if withContext == false {
 		_imp := _val.(_impClubActivityManager)
-		ret, err := _imp.GetActivityParticipate(ActivityId, &ParticipateList)
+		ret, err := _imp.GetActivityParticipate(Index, ActivityId, &NextIndex, &ParticipateList)
 		if err != nil {
 			return err
 		}
@@ -2978,7 +3004,7 @@ func GetActivityParticipate(ctx context.Context, _val interface{}, _os *codec.Bu
 		}
 	} else {
 		_imp := _val.(_impClubActivityManagerWithContext)
-		ret, err := _imp.GetActivityParticipate(ctx, ActivityId, &ParticipateList)
+		ret, err := _imp.GetActivityParticipate(ctx, Index, ActivityId, &NextIndex, &ParticipateList)
 		if err != nil {
 			return err
 		}
@@ -2989,7 +3015,12 @@ func GetActivityParticipate(ctx context.Context, _val interface{}, _os *codec.Bu
 		}
 	}
 
-	err = _os.WriteHead(codec.LIST, 2)
+	err = _os.Write_int32(NextIndex, 3)
+	if err != nil {
+		return err
+	}
+
+	err = _os.WriteHead(codec.LIST, 4)
 	if err != nil {
 		return err
 	}
