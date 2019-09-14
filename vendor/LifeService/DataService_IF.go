@@ -20,7 +20,7 @@ type DataService struct {
 }
 
 //HasUser is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) HasUser(Wx_id string, SRsp *bool, _opt ...map[string]string) (ret int32, err error) {
+func (_obj *DataService) HasUser(Wx_id string, UserExist *bool, _opt ...map[string]string) (ret int32, err error) {
 
 	var length int32
 	var have bool
@@ -51,7 +51,7 @@ func (_obj *DataService) HasUser(Wx_id string, SRsp *bool, _opt ...map[string]st
 		return ret, err
 	}
 
-	err = _is.Read_bool(&(*SRsp), 2, true)
+	err = _is.Read_bool(&(*UserExist), 2, true)
 	if err != nil {
 		return ret, err
 	}
@@ -64,7 +64,7 @@ func (_obj *DataService) HasUser(Wx_id string, SRsp *bool, _opt ...map[string]st
 }
 
 //HasUserWithContext is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) HasUserWithContext(ctx context.Context, Wx_id string, SRsp *bool, _opt ...map[string]string) (ret int32, err error) {
+func (_obj *DataService) HasUserWithContext(ctx context.Context, Wx_id string, UserExist *bool, _opt ...map[string]string) (ret int32, err error) {
 
 	var length int32
 	var have bool
@@ -94,7 +94,94 @@ func (_obj *DataService) HasUserWithContext(ctx context.Context, Wx_id string, S
 		return ret, err
 	}
 
-	err = _is.Read_bool(&(*SRsp), 2, true)
+	err = _is.Read_bool(&(*UserExist), 2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//HasPhone is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) HasPhone(Phone string, PhoneExist *bool, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Phone, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "hasPhone", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_bool(&(*PhoneExist), 2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//HasPhoneWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) HasPhoneWithContext(ctx context.Context, Phone string, PhoneExist *bool, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Phone, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "hasPhone", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _is.Read_bool(&(*PhoneExist), 2, true)
 	if err != nil {
 		return ret, err
 	}
@@ -194,7 +281,7 @@ func (_obj *DataService) CreateUserWithContext(ctx context.Context, Wx_id string
 }
 
 //GetUserInfo is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) GetUserInfo(Wx_id string, SRsp *UserInfo, _opt ...map[string]string) (ret int32, err error) {
+func (_obj *DataService) GetUserInfo(Wx_id string, UserInfo *UserInfo, _opt ...map[string]string) (ret int32, err error) {
 
 	var length int32
 	var have bool
@@ -225,7 +312,7 @@ func (_obj *DataService) GetUserInfo(Wx_id string, SRsp *UserInfo, _opt ...map[s
 		return ret, err
 	}
 
-	err = (*SRsp).ReadBlock(_is, 2, true)
+	err = (*UserInfo).ReadBlock(_is, 2, true)
 	if err != nil {
 		return ret, err
 	}
@@ -238,7 +325,7 @@ func (_obj *DataService) GetUserInfo(Wx_id string, SRsp *UserInfo, _opt ...map[s
 }
 
 //GetUserInfoWithContext is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) GetUserInfoWithContext(ctx context.Context, Wx_id string, SRsp *UserInfo, _opt ...map[string]string) (ret int32, err error) {
+func (_obj *DataService) GetUserInfoWithContext(ctx context.Context, Wx_id string, UserInfo *UserInfo, _opt ...map[string]string) (ret int32, err error) {
 
 	var length int32
 	var have bool
@@ -268,7 +355,7 @@ func (_obj *DataService) GetUserInfoWithContext(ctx context.Context, Wx_id strin
 		return ret, err
 	}
 
-	err = (*SRsp).ReadBlock(_is, 2, true)
+	err = (*UserInfo).ReadBlock(_is, 2, true)
 	if err != nil {
 		return ret, err
 	}
@@ -393,180 +480,6 @@ func (_obj *DataService) GetGroupInfoWithContext(ctx context.Context, GroupInfo 
 		}
 
 		(*GroupInfo)[k1] = v1
-	}
-
-	_obj.setMap(len(_opt), _resp, _context, _status)
-	_ = length
-	_ = have
-	_ = ty
-	return ret, nil
-}
-
-//GetGroupByUserId is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) GetGroupByUserId(Wx_id string, Group *string, _opt ...map[string]string) (ret int32, err error) {
-
-	var length int32
-	var have bool
-	var ty byte
-	_os := codec.NewBuffer()
-	err = _os.Write_string(Wx_id, 1)
-	if err != nil {
-		return ret, err
-	}
-
-	var _status map[string]string
-	var _context map[string]string
-	if len(_opt) == 1 {
-		_context = _opt[0]
-	} else if len(_opt) == 2 {
-		_context = _opt[0]
-		_status = _opt[1]
-	}
-	_resp := new(requestf.ResponsePacket)
-	ctx := context.Background()
-	err = _obj.s.Tars_invoke(ctx, 0, "getGroupByUserId", _os.ToBytes(), _status, _context, _resp)
-	if err != nil {
-		return ret, err
-	}
-	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
-	err = _is.Read_int32(&ret, 0, true)
-	if err != nil {
-		return ret, err
-	}
-
-	err = _is.Read_string(&(*Group), 2, true)
-	if err != nil {
-		return ret, err
-	}
-
-	_obj.setMap(len(_opt), _resp, _context, _status)
-	_ = length
-	_ = have
-	_ = ty
-	return ret, nil
-}
-
-//GetGroupByUserIdWithContext is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) GetGroupByUserIdWithContext(ctx context.Context, Wx_id string, Group *string, _opt ...map[string]string) (ret int32, err error) {
-
-	var length int32
-	var have bool
-	var ty byte
-	_os := codec.NewBuffer()
-	err = _os.Write_string(Wx_id, 1)
-	if err != nil {
-		return ret, err
-	}
-
-	var _status map[string]string
-	var _context map[string]string
-	if len(_opt) == 1 {
-		_context = _opt[0]
-	} else if len(_opt) == 2 {
-		_context = _opt[0]
-		_status = _opt[1]
-	}
-	_resp := new(requestf.ResponsePacket)
-	err = _obj.s.Tars_invoke(ctx, 0, "getGroupByUserId", _os.ToBytes(), _status, _context, _resp)
-	if err != nil {
-		return ret, err
-	}
-	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
-	err = _is.Read_int32(&ret, 0, true)
-	if err != nil {
-		return ret, err
-	}
-
-	err = _is.Read_string(&(*Group), 2, true)
-	if err != nil {
-		return ret, err
-	}
-
-	_obj.setMap(len(_opt), _resp, _context, _status)
-	_ = length
-	_ = have
-	_ = ty
-	return ret, nil
-}
-
-//GetGroupByGroupId is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) GetGroupByGroupId(GroupId int32, Group *string, _opt ...map[string]string) (ret int32, err error) {
-
-	var length int32
-	var have bool
-	var ty byte
-	_os := codec.NewBuffer()
-	err = _os.Write_int32(GroupId, 1)
-	if err != nil {
-		return ret, err
-	}
-
-	var _status map[string]string
-	var _context map[string]string
-	if len(_opt) == 1 {
-		_context = _opt[0]
-	} else if len(_opt) == 2 {
-		_context = _opt[0]
-		_status = _opt[1]
-	}
-	_resp := new(requestf.ResponsePacket)
-	ctx := context.Background()
-	err = _obj.s.Tars_invoke(ctx, 0, "getGroupByGroupId", _os.ToBytes(), _status, _context, _resp)
-	if err != nil {
-		return ret, err
-	}
-	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
-	err = _is.Read_int32(&ret, 0, true)
-	if err != nil {
-		return ret, err
-	}
-
-	err = _is.Read_string(&(*Group), 2, true)
-	if err != nil {
-		return ret, err
-	}
-
-	_obj.setMap(len(_opt), _resp, _context, _status)
-	_ = length
-	_ = have
-	_ = ty
-	return ret, nil
-}
-
-//GetGroupByGroupIdWithContext is the proxy function for the method defined in the tars file, with the context
-func (_obj *DataService) GetGroupByGroupIdWithContext(ctx context.Context, GroupId int32, Group *string, _opt ...map[string]string) (ret int32, err error) {
-
-	var length int32
-	var have bool
-	var ty byte
-	_os := codec.NewBuffer()
-	err = _os.Write_int32(GroupId, 1)
-	if err != nil {
-		return ret, err
-	}
-
-	var _status map[string]string
-	var _context map[string]string
-	if len(_opt) == 1 {
-		_context = _opt[0]
-	} else if len(_opt) == 2 {
-		_context = _opt[0]
-		_status = _opt[1]
-	}
-	_resp := new(requestf.ResponsePacket)
-	err = _obj.s.Tars_invoke(ctx, 0, "getGroupByGroupId", _os.ToBytes(), _status, _context, _resp)
-	if err != nil {
-		return ret, err
-	}
-	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
-	err = _is.Read_int32(&ret, 0, true)
-	if err != nil {
-		return ret, err
-	}
-
-	err = _is.Read_string(&(*Group), 2, true)
-	if err != nil {
-		return ret, err
 	}
 
 	_obj.setMap(len(_opt), _resp, _context, _status)
@@ -1075,6 +988,93 @@ func (_obj *DataService) GetManagerClubListWithContext(ctx context.Context, Inde
 		if err != nil {
 			return ret, err
 		}
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//CreateApply is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) CreateApply(Wx_id string, Club_id string, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Wx_id, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(Club_id, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "createApply", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//CreateApplyWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) CreateApplyWithContext(ctx context.Context, Wx_id string, Club_id string, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Wx_id, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(Club_id, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "createApply", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
 	}
 
 	_obj.setMap(len(_opt), _resp, _context, _status)
@@ -1642,6 +1642,83 @@ func (_obj *DataService) DeleteApplyWithContext(ctx context.Context, Wx_id strin
 	return ret, nil
 }
 
+//CreateActivity is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) CreateActivity(ActivityInfo *ActivityInfo, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = ActivityInfo.WriteBlock(_os, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "createActivity", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//CreateActivityWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) CreateActivityWithContext(ctx context.Context, ActivityInfo *ActivityInfo, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = ActivityInfo.WriteBlock(_os, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "createActivity", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
 //GetActivityList is the proxy function for the method defined in the tars file, with the context
 func (_obj *DataService) GetActivityList(Index int32, Batch int32, Wx_id string, Club_id string, NextIndex *int32, ActivityList *[]map[string]string, _opt ...map[string]string) (ret int32, err error) {
 
@@ -2028,6 +2105,180 @@ func (_obj *DataService) DeleteActivityWithContext(ctx context.Context, Activity
 	}
 
 	err = _is.Read_int32(&(*IRetCode), 2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//GetActivityInfo is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) GetActivityInfo(Activity_id string, ActivityInfo *ActivityInfo, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Activity_id, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "getActivityInfo", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = (*ActivityInfo).ReadBlock(_is, 2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//GetActivityInfoWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) GetActivityInfoWithContext(ctx context.Context, Activity_id string, ActivityInfo *ActivityInfo, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Activity_id, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "getActivityInfo", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	err = (*ActivityInfo).ReadBlock(_is, 2, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//CreateActivityRecord is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) CreateActivityRecord(Wx_id string, Activity_id string, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Wx_id, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(Activity_id, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	ctx := context.Background()
+	err = _obj.s.Tars_invoke(ctx, 0, "createActivityRecord", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
+	if err != nil {
+		return ret, err
+	}
+
+	_obj.setMap(len(_opt), _resp, _context, _status)
+	_ = length
+	_ = have
+	_ = ty
+	return ret, nil
+}
+
+//CreateActivityRecordWithContext is the proxy function for the method defined in the tars file, with the context
+func (_obj *DataService) CreateActivityRecordWithContext(ctx context.Context, Wx_id string, Activity_id string, _opt ...map[string]string) (ret int32, err error) {
+
+	var length int32
+	var have bool
+	var ty byte
+	_os := codec.NewBuffer()
+	err = _os.Write_string(Wx_id, 1)
+	if err != nil {
+		return ret, err
+	}
+
+	err = _os.Write_string(Activity_id, 2)
+	if err != nil {
+		return ret, err
+	}
+
+	var _status map[string]string
+	var _context map[string]string
+	if len(_opt) == 1 {
+		_context = _opt[0]
+	} else if len(_opt) == 2 {
+		_context = _opt[0]
+		_status = _opt[1]
+	}
+	_resp := new(requestf.ResponsePacket)
+	err = _obj.s.Tars_invoke(ctx, 0, "createActivityRecord", _os.ToBytes(), _status, _context, _resp)
+	if err != nil {
+		return ret, err
+	}
+	_is := codec.NewReader(tools.Int8ToByte(_resp.SBuffer))
+	err = _is.Read_int32(&ret, 0, true)
 	if err != nil {
 		return ret, err
 	}
@@ -3186,23 +3437,26 @@ func (_obj *DataService) AddServantWithContext(imp _impDataServiceWithContext, o
 }
 
 type _impDataService interface {
-	HasUser(Wx_id string, SRsp *bool) (ret int32, err error)
+	HasUser(Wx_id string, UserExist *bool) (ret int32, err error)
+	HasPhone(Phone string, PhoneExist *bool) (ret int32, err error)
 	CreateUser(Wx_id string, UserInfo *UserInfo) (ret int32, err error)
-	GetUserInfo(Wx_id string, SRsp *UserInfo) (ret int32, err error)
+	GetUserInfo(Wx_id string, UserInfo *UserInfo) (ret int32, err error)
 	GetGroupInfo(GroupInfo *map[int32]string) (ret int32, err error)
-	GetGroupByUserId(Wx_id string, Group *string) (ret int32, err error)
-	GetGroupByGroupId(GroupId int32, Group *string) (ret int32, err error)
 	CreateClubManager(Wx_id string, Club_id string) (ret int32, err error)
 	CreateClub(ClubInfo *ClubInfo, Club_id *string) (ret int32, err error)
 	GetClubList(Index int32, Batch int32, Wx_id string, NextIndex *int32, ClubInfoList *[]ClubInfo) (ret int32, err error)
 	GetManagerClubList(Index int32, Batch int32, Wx_id string, NextIndex *int32, ClubInfoList *[]ClubInfo) (ret int32, err error)
+	CreateApply(Wx_id string, Club_id string) (ret int32, err error)
 	GetApplyListByClubId(Club_id string, Index int32, Batch int32, Apply_status int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
 	GetApplyListByUserId(Wx_id string, Index int32, Batch int32, Apply_status int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
 	SetApplyStatus(Wx_id string, Club_id string, Apply_status int32, IRetCode *int32) (ret int32, err error)
 	DeleteApply(Wx_id string, Club_id string, IRetCode *int32) (ret int32, err error)
+	CreateActivity(ActivityInfo *ActivityInfo) (ret int32, err error)
 	GetActivityList(Index int32, Batch int32, Wx_id string, Club_id string, NextIndex *int32, ActivityList *[]map[string]string) (ret int32, err error)
 	UpdateActivity(ActivityIndo *ActivityInfo, IRetCode *int32) (ret int32, err error)
 	DeleteActivity(Activity_id string, IRetCode *int32) (ret int32, err error)
+	GetActivityInfo(Activity_id string, ActivityInfo *ActivityInfo) (ret int32, err error)
+	CreateActivityRecord(Wx_id string, Activity_id string) (ret int32, err error)
 	GetActivityRecords(Index int32, Batch int32, Activity_id string, NextIndex *int32, RecordList *[]ActivityRecord) (ret int32, err error)
 	DeleteActivityRecord(Activity_id string, Wx_id string, IRetCode *int32) (ret int32, err error)
 	InsertMessage(Msg *Message) (ret int32, err error)
@@ -3214,23 +3468,26 @@ type _impDataService interface {
 	GetRecordCount(STableName string, SCondition string, ICount *int32) (ret int32, err error)
 }
 type _impDataServiceWithContext interface {
-	HasUser(ctx context.Context, Wx_id string, SRsp *bool) (ret int32, err error)
+	HasUser(ctx context.Context, Wx_id string, UserExist *bool) (ret int32, err error)
+	HasPhone(ctx context.Context, Phone string, PhoneExist *bool) (ret int32, err error)
 	CreateUser(ctx context.Context, Wx_id string, UserInfo *UserInfo) (ret int32, err error)
-	GetUserInfo(ctx context.Context, Wx_id string, SRsp *UserInfo) (ret int32, err error)
+	GetUserInfo(ctx context.Context, Wx_id string, UserInfo *UserInfo) (ret int32, err error)
 	GetGroupInfo(ctx context.Context, GroupInfo *map[int32]string) (ret int32, err error)
-	GetGroupByUserId(ctx context.Context, Wx_id string, Group *string) (ret int32, err error)
-	GetGroupByGroupId(ctx context.Context, GroupId int32, Group *string) (ret int32, err error)
 	CreateClubManager(ctx context.Context, Wx_id string, Club_id string) (ret int32, err error)
 	CreateClub(ctx context.Context, ClubInfo *ClubInfo, Club_id *string) (ret int32, err error)
 	GetClubList(ctx context.Context, Index int32, Batch int32, Wx_id string, NextIndex *int32, ClubInfoList *[]ClubInfo) (ret int32, err error)
 	GetManagerClubList(ctx context.Context, Index int32, Batch int32, Wx_id string, NextIndex *int32, ClubInfoList *[]ClubInfo) (ret int32, err error)
+	CreateApply(ctx context.Context, Wx_id string, Club_id string) (ret int32, err error)
 	GetApplyListByClubId(ctx context.Context, Club_id string, Index int32, Batch int32, Apply_status int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
 	GetApplyListByUserId(ctx context.Context, Wx_id string, Index int32, Batch int32, Apply_status int32, NextIndex *int32, ApplyList *[]ApplyInfo) (ret int32, err error)
 	SetApplyStatus(ctx context.Context, Wx_id string, Club_id string, Apply_status int32, IRetCode *int32) (ret int32, err error)
 	DeleteApply(ctx context.Context, Wx_id string, Club_id string, IRetCode *int32) (ret int32, err error)
+	CreateActivity(ctx context.Context, ActivityInfo *ActivityInfo) (ret int32, err error)
 	GetActivityList(ctx context.Context, Index int32, Batch int32, Wx_id string, Club_id string, NextIndex *int32, ActivityList *[]map[string]string) (ret int32, err error)
 	UpdateActivity(ctx context.Context, ActivityIndo *ActivityInfo, IRetCode *int32) (ret int32, err error)
 	DeleteActivity(ctx context.Context, Activity_id string, IRetCode *int32) (ret int32, err error)
+	GetActivityInfo(ctx context.Context, Activity_id string, ActivityInfo *ActivityInfo) (ret int32, err error)
+	CreateActivityRecord(ctx context.Context, Wx_id string, Activity_id string) (ret int32, err error)
 	GetActivityRecords(ctx context.Context, Index int32, Batch int32, Activity_id string, NextIndex *int32, RecordList *[]ActivityRecord) (ret int32, err error)
 	DeleteActivityRecord(ctx context.Context, Activity_id string, Wx_id string, IRetCode *int32) (ret int32, err error)
 	InsertMessage(ctx context.Context, Msg *Message) (ret int32, err error)
@@ -3251,10 +3508,10 @@ func hasUser(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *code
 	if err != nil {
 		return err
 	}
-	var SRsp bool
+	var UserExist bool
 	if withContext == false {
 		_imp := _val.(_impDataService)
-		ret, err := _imp.HasUser(Wx_id, &SRsp)
+		ret, err := _imp.HasUser(Wx_id, &UserExist)
 		if err != nil {
 			return err
 		}
@@ -3265,7 +3522,7 @@ func hasUser(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *code
 		}
 	} else {
 		_imp := _val.(_impDataServiceWithContext)
-		ret, err := _imp.HasUser(ctx, Wx_id, &SRsp)
+		ret, err := _imp.HasUser(ctx, Wx_id, &UserExist)
 		if err != nil {
 			return err
 		}
@@ -3276,7 +3533,51 @@ func hasUser(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *code
 		}
 	}
 
-	err = _os.Write_bool(SRsp, 2)
+	err = _os.Write_bool(UserExist, 2)
+	if err != nil {
+		return err
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
+func hasPhone(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var Phone string
+	err = _is.Read_string(&Phone, 1, true)
+	if err != nil {
+		return err
+	}
+	var PhoneExist bool
+	if withContext == false {
+		_imp := _val.(_impDataService)
+		ret, err := _imp.HasPhone(Phone, &PhoneExist)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impDataServiceWithContext)
+		ret, err := _imp.HasPhone(ctx, Phone, &PhoneExist)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = _os.Write_bool(PhoneExist, 2)
 	if err != nil {
 		return err
 	}
@@ -3338,10 +3639,10 @@ func getUserInfo(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *
 	if err != nil {
 		return err
 	}
-	var SRsp UserInfo
+	var UserInfo UserInfo
 	if withContext == false {
 		_imp := _val.(_impDataService)
-		ret, err := _imp.GetUserInfo(Wx_id, &SRsp)
+		ret, err := _imp.GetUserInfo(Wx_id, &UserInfo)
 		if err != nil {
 			return err
 		}
@@ -3352,7 +3653,7 @@ func getUserInfo(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *
 		}
 	} else {
 		_imp := _val.(_impDataServiceWithContext)
-		ret, err := _imp.GetUserInfo(ctx, Wx_id, &SRsp)
+		ret, err := _imp.GetUserInfo(ctx, Wx_id, &UserInfo)
 		if err != nil {
 			return err
 		}
@@ -3363,7 +3664,7 @@ func getUserInfo(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *
 		}
 	}
 
-	err = SRsp.WriteBlock(_os, 2)
+	err = UserInfo.WriteBlock(_os, 2)
 	if err != nil {
 		return err
 	}
@@ -3421,94 +3722,6 @@ func getGroupInfo(ctx context.Context, _val interface{}, _os *codec.Buffer, _is 
 		if err != nil {
 			return err
 		}
-	}
-
-	_ = length
-	_ = have
-	_ = ty
-	return nil
-}
-func getGroupByUserId(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
-	var length int32
-	var have bool
-	var ty byte
-	var Wx_id string
-	err = _is.Read_string(&Wx_id, 1, true)
-	if err != nil {
-		return err
-	}
-	var Group string
-	if withContext == false {
-		_imp := _val.(_impDataService)
-		ret, err := _imp.GetGroupByUserId(Wx_id, &Group)
-		if err != nil {
-			return err
-		}
-
-		err = _os.Write_int32(ret, 0)
-		if err != nil {
-			return err
-		}
-	} else {
-		_imp := _val.(_impDataServiceWithContext)
-		ret, err := _imp.GetGroupByUserId(ctx, Wx_id, &Group)
-		if err != nil {
-			return err
-		}
-
-		err = _os.Write_int32(ret, 0)
-		if err != nil {
-			return err
-		}
-	}
-
-	err = _os.Write_string(Group, 2)
-	if err != nil {
-		return err
-	}
-
-	_ = length
-	_ = have
-	_ = ty
-	return nil
-}
-func getGroupByGroupId(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
-	var length int32
-	var have bool
-	var ty byte
-	var GroupId int32
-	err = _is.Read_int32(&GroupId, 1, true)
-	if err != nil {
-		return err
-	}
-	var Group string
-	if withContext == false {
-		_imp := _val.(_impDataService)
-		ret, err := _imp.GetGroupByGroupId(GroupId, &Group)
-		if err != nil {
-			return err
-		}
-
-		err = _os.Write_int32(ret, 0)
-		if err != nil {
-			return err
-		}
-	} else {
-		_imp := _val.(_impDataServiceWithContext)
-		ret, err := _imp.GetGroupByGroupId(ctx, GroupId, &Group)
-		if err != nil {
-			return err
-		}
-
-		err = _os.Write_int32(ret, 0)
-		if err != nil {
-			return err
-		}
-	}
-
-	err = _os.Write_string(Group, 2)
-	if err != nil {
-		return err
 	}
 
 	_ = length
@@ -3735,6 +3948,49 @@ func getManagerClubList(ctx context.Context, _val interface{}, _os *codec.Buffer
 	for _, v := range ClubInfoList {
 
 		err = v.WriteBlock(_os, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
+func createApply(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var Wx_id string
+	err = _is.Read_string(&Wx_id, 1, true)
+	if err != nil {
+		return err
+	}
+	var Club_id string
+	err = _is.Read_string(&Club_id, 2, true)
+	if err != nil {
+		return err
+	}
+	if withContext == false {
+		_imp := _val.(_impDataService)
+		ret, err := _imp.CreateApply(Wx_id, Club_id)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impDataServiceWithContext)
+		ret, err := _imp.CreateApply(ctx, Wx_id, Club_id)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
 		if err != nil {
 			return err
 		}
@@ -4000,6 +4256,44 @@ func deleteApply(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *
 	_ = ty
 	return nil
 }
+func createActivity(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var ActivityInfo ActivityInfo
+	err = ActivityInfo.ReadBlock(_is, 1, true)
+	if err != nil {
+		return err
+	}
+	if withContext == false {
+		_imp := _val.(_impDataService)
+		ret, err := _imp.CreateActivity(&ActivityInfo)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impDataServiceWithContext)
+		ret, err := _imp.CreateActivity(ctx, &ActivityInfo)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
 func getActivityList(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
 	var length int32
 	var have bool
@@ -4173,6 +4467,93 @@ func deleteActivity(ctx context.Context, _val interface{}, _os *codec.Buffer, _i
 	err = _os.Write_int32(IRetCode, 2)
 	if err != nil {
 		return err
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
+func getActivityInfo(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var Activity_id string
+	err = _is.Read_string(&Activity_id, 1, true)
+	if err != nil {
+		return err
+	}
+	var ActivityInfo ActivityInfo
+	if withContext == false {
+		_imp := _val.(_impDataService)
+		ret, err := _imp.GetActivityInfo(Activity_id, &ActivityInfo)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impDataServiceWithContext)
+		ret, err := _imp.GetActivityInfo(ctx, Activity_id, &ActivityInfo)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = ActivityInfo.WriteBlock(_os, 2)
+	if err != nil {
+		return err
+	}
+
+	_ = length
+	_ = have
+	_ = ty
+	return nil
+}
+func createActivityRecord(ctx context.Context, _val interface{}, _os *codec.Buffer, _is *codec.Reader, withContext bool) (err error) {
+	var length int32
+	var have bool
+	var ty byte
+	var Wx_id string
+	err = _is.Read_string(&Wx_id, 1, true)
+	if err != nil {
+		return err
+	}
+	var Activity_id string
+	err = _is.Read_string(&Activity_id, 2, true)
+	if err != nil {
+		return err
+	}
+	if withContext == false {
+		_imp := _val.(_impDataService)
+		ret, err := _imp.CreateActivityRecord(Wx_id, Activity_id)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
+	} else {
+		_imp := _val.(_impDataServiceWithContext)
+		ret, err := _imp.CreateActivityRecord(ctx, Wx_id, Activity_id)
+		if err != nil {
+			return err
+		}
+
+		err = _os.Write_int32(ret, 0)
+		if err != nil {
+			return err
+		}
 	}
 
 	_ = length
@@ -4725,6 +5106,11 @@ func (_obj *DataService) Dispatch(ctx context.Context, _val interface{}, req *re
 		if err != nil {
 			return err
 		}
+	case "hasPhone":
+		err := hasPhone(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
 	case "createUser":
 		err := createUser(ctx, _val, _os, _is, withContext)
 		if err != nil {
@@ -4737,16 +5123,6 @@ func (_obj *DataService) Dispatch(ctx context.Context, _val interface{}, req *re
 		}
 	case "getGroupInfo":
 		err := getGroupInfo(ctx, _val, _os, _is, withContext)
-		if err != nil {
-			return err
-		}
-	case "getGroupByUserId":
-		err := getGroupByUserId(ctx, _val, _os, _is, withContext)
-		if err != nil {
-			return err
-		}
-	case "getGroupByGroupId":
-		err := getGroupByGroupId(ctx, _val, _os, _is, withContext)
 		if err != nil {
 			return err
 		}
@@ -4770,6 +5146,11 @@ func (_obj *DataService) Dispatch(ctx context.Context, _val interface{}, req *re
 		if err != nil {
 			return err
 		}
+	case "createApply":
+		err := createApply(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
 	case "getApplyListByClubId":
 		err := getApplyListByClubId(ctx, _val, _os, _is, withContext)
 		if err != nil {
@@ -4790,6 +5171,11 @@ func (_obj *DataService) Dispatch(ctx context.Context, _val interface{}, req *re
 		if err != nil {
 			return err
 		}
+	case "createActivity":
+		err := createActivity(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
 	case "getActivityList":
 		err := getActivityList(ctx, _val, _os, _is, withContext)
 		if err != nil {
@@ -4802,6 +5188,16 @@ func (_obj *DataService) Dispatch(ctx context.Context, _val interface{}, req *re
 		}
 	case "deleteActivity":
 		err := deleteActivity(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
+	case "getActivityInfo":
+		err := getActivityInfo(ctx, _val, _os, _is, withContext)
+		if err != nil {
+			return err
+		}
+	case "createActivityRecord":
+		err := createActivityRecord(ctx, _val, _os, _is, withContext)
 		if err != nil {
 			return err
 		}
