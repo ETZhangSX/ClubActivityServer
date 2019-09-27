@@ -207,6 +207,7 @@ func (imp *ClubActivityManagerImp) CreateActivity(wxID string, activityInfo *Lif
 
 	if isClubManager {
 		// 创建社团
+		activityInfo.Target_id = "0"
 		_, err1 := imp.dataServiceProxy.CreateActivity(activityInfo)
 
 		if err1 != nil {
