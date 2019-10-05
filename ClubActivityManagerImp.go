@@ -123,6 +123,47 @@ func (imp *ClubActivityManagerImp) GetManagerClubList(index int32, wxID string, 
     return 0, nil
 }
 
+//DeleteClub 删除社团
+func (imp *ClubActivityManagerImp) DeleteClub(clubID string, ErrCode *LifeService.ErrorCode) (int32, error) {
+    var affectRows int32
+    _, err := imp.dataServiceProxy.DeleteClub(clubID, &affectRows)
+    if err != nil || affectRows == -1 {
+        SLOG.Error("Remote Server DataServer::DeleteClub error")
+        *ErrCode = LifeService.ErrorCode_SERVERERROR
+        return 0, nil
+    }
+
+    if affectRows == 0 {
+        *ErrCode = LifeService.ErrorCode_CLUBNOTEXIST
+        SLOG.Error("Remote Server DataServer::DeleteClub error: Club does not exist")
+        return 0, nil
+    }
+    *ErrCode = LifeService.ErrorCode_SUCCESS
+    SLOG.Debug("Delete Club Successfully")
+    return 0, nil
+}
+
+//DeleteClubManager 删除社团管理员
+func (imp *ClubActivityManagerImp) DeleteClubManager(wxID string, clubID string, ErrCode *LifeService.ErrorCode) (int32, error) {
+    var affectRows int32
+    _, err := imp.dataServiceProxy.DeleteClubManager(wxID, clubID, &affectRows)
+    if err != nil || affectRows == -1 {
+        SLOG.Error("Remote Server DataServer::DeleteClubManager Error")
+        *ErrCode = LifeService.ErrorCode_SERVERERROR
+        return 0, nil
+    }
+
+    if affectRows == 0 {
+        *ErrCode = LifeService.ErrorCode_CLUBNOTEXIST
+        SLOG.Error("Remote Server DataServer::DeleteClubManager error: Manager does not exist")
+        return 0, nil
+    }
+
+    *ErrCode = LifeService.ErrorCode_SUCCESS
+    SLOG.Debug("Delete Club Manager Successfully")
+    return 0, nil
+}
+
 //ApplyForClub 申请社团
 func (imp *ClubActivityManagerImp) ApplyForClub(wxID string, clubID string, ErrCode *LifeService.ErrorCode) (int32, error) {
     // 判断是否已经在社团中或提交了申请
