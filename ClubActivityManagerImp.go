@@ -154,7 +154,7 @@ func (imp *ClubActivityManagerImp) DeleteClubManager(wxID string, clubID string,
     }
 
     if affectRows == 0 {
-        *ErrCode = LifeService.ErrorCode_CLUBNOTEXIST
+        *ErrCode = LifeService.ErrorCode_MANAGERNOTEXIST
         SLOG.Error("Remote Server DataServer::DeleteClubManager error: Manager does not exist")
         return 0, nil
     }
