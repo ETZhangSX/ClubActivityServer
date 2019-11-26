@@ -169,19 +169,16 @@ func (imp *ClubActivityManagerImp) ApplyForClub(wxID string, clubID string, ErrC
     // 判断是否已经在社团中或提交了申请
     var isInClub bool
     _, err := imp.userInfoServiceProxy.IsInClub(wxID, clubID, false, &isInClub)
-
     if err != nil {
         SLOG.Error("Remote Server UserInfoServer::IsInClub error")
         *ErrCode = LifeService.ErrorCode_SERVERERROR
         return 0, nil
     }
-
     if isInClub {
         *ErrCode = LifeService.ErrorCode_USERAPPLIED
         SLOG.Debug("Applied")
         return 0, nil
     }
-
     // 若没有提交申请，创建申请
     _, err1 := imp.dataServiceProxy.CreateApply(wxID, clubID)
     if err1 != nil {
@@ -231,7 +228,7 @@ func (imp *ClubActivityManagerImp) ModifyApplyStatus(wxID string, clubID string,
         *ErrCode = LifeService.ErrorCode_APPLYNOTEXIST
         return 0, nil
     }
-    SLOG.Debug("ModifuApplyStatus")
+    SLOG.Debug("ModifyApplyStatus")
     *ErrCode = LifeService.ErrorCode_SUCCESS
     return 0, nil
 }
